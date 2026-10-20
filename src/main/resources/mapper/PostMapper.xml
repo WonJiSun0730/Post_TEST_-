@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.post.mapper.PostMapper">
+    <resultMap id="postMap" type="com.example.post.dto.Post">
+        <id property="postNo" column="post_no"/>
+        <result property="title" column="title"/>
+        <result property="writer" column="writer"/>
+        <result property="content" column="content"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="updDate" column="upd_date"/>
+    </resultMap>
+
+    <!-- 문항5: 목록에 LIMIT/OFFSET 적용 -->
+    <select id="list" parameterType="com.example.post.dto.Page" resultMap="postMap">
+        SELECT post_no, title, writer, content, reg_date, upd_date
+        FROM posts
+        ORDER BY post_no DESC
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM posts
+    </select>
+    <select id="read" resultMap="postMap">
+        SELECT post_no, title, writer, content, reg_date, upd_date
+        FROM posts WHERE post_no = #{postNo}
+    </select>
+    <insert id="insert" parameterType="com.example.post.dto.Post"
+            useGeneratedKeys="true" keyProperty="postNo" keyColumn="post_no">
+        INSERT INTO posts (title, writer, content, reg_date, upd_date)
+        VALUES (#{title}, #{writer}, #{content}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+    </insert>
+    <update id="update" parameterType="com.example.post.dto.Post">
+        UPDATE posts SET title = #{title}, writer = #{writer},
+            content = #{content}, upd_date = CURRENT_TIMESTAMP
+        WHERE post_no = #{postNo}
+    </update>
+    <delete id="delete">
+        DELETE FROM posts WHERE post_no = #{postNo}
+    </delete>
+</mapper>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>게시판</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body><main>
+<h1 th:text="${post.title}">게시글 조회</h1>
+<dl><dt>글번호</dt><dd th:text="${post.postNo}"></dd>
+<dt>작성자</dt><dd th:text="${post.writer}"></dd>
+<dt>등록일</dt><dd th:text="${#temporals.format(post.regDate, 'yyyy-MM-dd HH:mm')}"></dd>
+<dt>수정일</dt><dd th:text="${#temporals.format(post.updDate, 'yyyy-MM-dd HH:mm')}"></dd></dl>
+<article class="content" th:text="${post.content}">내용</article>
+<div class="actions"><a class="button" th:href="@{/Post/update(PostNo=${post.postNo})}">수정</a>
+<a th:href="@{/Post/list}">목록</a></div>
+</main></body></html>
